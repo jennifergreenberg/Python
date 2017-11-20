@@ -1,0 +1,112 @@
+import io
+import string
+#building the gibberish sentence 
+def buildSentence( inceptionary,done,num):
+    i=0
+    sentence=""
+    aWord=ListfirstWords(done)
+    first=ListfirstWords(done)
+    while i<=num:
+ #       aWord=ListfirstWords(done)
+        aWordDict=inceptionary[aWord]
+        nextWord=getHighestCount(aWordDict)
+        sentence= sentence + " " +nextWord
+        aWord=nextWord
+        i+=1
+    print (first+ sentence + ".")
+        
+
+        
+#Removes punctuation from line
+def remove_punct(line):
+    line = line.lower()
+    for char in line:
+        if not(char in string.ascii_lowercase):
+            line = line.replace(char, " ")
+    return line
+
+#Creates dictionary of first word in each sentence
+def ListfirstWords(done):
+    firstWords = {}
+    for sentence in done:
+        line = sentence.split()
+        for word in line:
+            if(word in firstWords.keys()):
+                firstWords[word] += 1
+                break #So it only adds the first word in each line
+            else:
+                firstWords[word] = 1
+                break
+    firstWord = getHighestCount(firstWords)
+    #print(firstWord)
+    return firstWord
+
+def getHighestCount(myDict):
+    biggestWord = ""
+    biggestCount = 0
+    for item in myDict:
+        if biggestCount < myDict[item]:
+            biggestCount = myDict[item]
+            biggestWord = item
+    return biggestWord
+
+
+#Splits txtfile up into sentences
+def sentenceBreak(fileName):      
+    file = io.open(fileName, mode="r", encoding="utf-8")
+    done = []
+    for line in file:
+        line = line.lower()
+        line = line.replace("\n", "")
+    
+        temp = line.replace("!", ".")
+        temp1 = temp.replace("?", ".")
+        done.extend(temp1.split(".")[0:-1])
+    return done
+
+
+def avgLength(done):
+    wordcounts = []
+    for sentence in done:
+        words = sentence.split(" ")
+        wordcounts.append(len(words))
+    avg_word = sum(wordcounts)/len(wordcounts)
+    return avg_word
+#Creates each page of inceptionary
+def makePage(theWord):
+    subpage = {}
+    someValue = False
+    file = io.open("Jane.txt", mode="r", encoding="utf-8")
+    for line in file:
+        temp = remove_punct(line)
+        key = temp.split()
+        for x in key:
+            if (someValue == True):
+                if(x in subpage.keys()):
+                    subpage[x] += 1
+                else:
+                    subpage[x] = 1
+                someValue = False
+            if( x == theWord):
+                someValue = True
+    return subpage
+
+
+#Creates base inceptionary
+file = io.open("Jane.txt", mode="r", encoding="utf-8")
+inceptionary = {}
+for line in file:
+    temp = remove_punct(line)
+    word = temp.split()
+    for x in word:
+        if(x in inceptionary.keys()):
+            pass
+        else:
+            inceptionary[x] = makePage(x)
+#print(str(inceptionary))
+                
+
+done = sentenceBreak("Jane.txt")
+#ListfirstWords(done)
+num = avgLength(done)
+buildSentence(inceptionary,done, num)
