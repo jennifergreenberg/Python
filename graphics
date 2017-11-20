@@ -1,0 +1,94 @@
+from graphics import *
+import random
+
+def delay(d):
+    for i in range(d):
+        for i in range(50):
+            pass
+
+def main():
+ 
+    
+    win=GraphWin("Moving Circle",500,400)
+    win.setBackground('white')
+    pt= Point(100,200)
+    cir=Circle(pt,30)
+    #changes the color of the circle for each game
+    r = random.randrange(256)
+    b = random.randrange(256)
+    g = random.randrange(256)
+    color = color_rgb(r, g, b)
+    cir.setFill(color)
+    cir.draw(win)
+#rectangle
+    rec = Rectangle(Point(450,450), Point(275, 425))
+    rec.draw(win)
+    rec.setFill('black')
+
+    pt5 = Point(250,30)
+    instruct1=Text(pt5, "click multiple times to start(rectangle can take multiple clicks to move)")
+    instruct1.setTextColor('black')
+    instruct1.draw(win)
+
+
+    p=cir.getCenter()
+    p2=win.getMouse()
+
+    dx=1
+    dy=1
+
+    keepGoing=True
+
+    while keepGoing:
+        d = 100
+        delay(d)
+        cir.move(dx,dy)
+        p=cir.getCenter()
+        p2=win.checkMouse()
+        instruct1.setText("")
+
+#rectanlge
+        isClicked= win.checkMouse()
+        if isClicked:
+            rp = isClicked
+            rc = rec.getCenter()
+            rdx = rp.getX() - rc.getX()
+            rdy = rp.getY() - rc.getY()
+            rec.move(rdx,rdy)
+
+#circle
+        if((p.getX()-30)<=0.0) or ((p.getX()+30)>=500):
+            dx= -dx
+                    
+        if((p.getY()-30)<=0.0) or ((p.getY()+30)>=400):
+            dy=-dy
+        p3=win.checkMouse()
+
+
+        
+
+main()
+#def moveRectangle():
+
+    
+   # win = GraphWin("Moving Cirlce", 500, 400)
+#    rec = Rectangle(Point(450,450), Point(275, 425))
+ #   rec.draw(win)
+ #   rec.setFill('black')
+    #for i in range(25):#beat game= get all blocks in 25< moves
+ #       p = win.getMouse()
+ #       c = rec.getCenter()
+ #       dx = p.getX() - c.getX()
+ #       dy = p.getY() - c.getY()
+ #       rec.move(dx,dy)
+ #   win.getMouse()
+ #   win.close()
+#main()
+#moveRectangle()
+
+
+
+
+
+
+  
