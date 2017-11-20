@@ -1,0 +1,39 @@
+#.extend (put lists together)
+#line=rstrip(line)
+#list.count
+
+debug = 0
+
+class Genome():
+    def __init__(self, file_one, file_two):
+        with open (file_one, mode="r", encoding="utf-8") as animal_1:
+            self.file1 = list(animal_1.read())
+        with open (file_two, mode="r", encoding="utf-8") as animal_2:
+            self.file2 = list(animal_2.read())
+        global debug
+        if debug > 2:
+            print("length of file 1: {}".format(len(self.file1)))
+            print("length of file 2: {}".format(len(self.file2)))
+            
+    def count(self):
+        ready_list = zip(self.file1, self.file2)
+        count = len(self.file1) - len(self.file2)
+        for letters in ready_list:
+            firstone = letters[0]
+            secondone = letters[1]
+            global debug
+            if debug > 0:
+                print("first: {} second: {}".format(firstone, secondone))
+            if firstone != secondone:
+                count += 1
+        print(count)
+
+my_gene = Genome("one.txt", "two.txt")
+my_gene.count()
+
+
+
+
+
+
+
