@@ -1,0 +1,40 @@
+import io
+import string
+
+#removes punctuation
+def remove_punct(line):
+    line = line.lower()
+    for char in line:
+        if not(char in string.ascii_lowercase):
+            line = line.replace(char, " ")
+    return line
+
+#creates pages for the inceptionary
+def makePage(theWord):
+    subpage = {}
+    someValue= False
+    file = io.open("Jane.txt", mode="r",encoding="utf-8")
+    for line in file:
+        key= line.split()
+        for x in key:
+            if(someValue == True):
+                if(x in subpage.keys()):
+                    subpage[x] += 1
+                else:
+                    subpage[x] = 1
+                someValue = False
+            if(x == theWord):
+                someValue = True
+    return subpage
+
+file = io.open("Jane.txt", mode="r", encoding="utf-8")
+inceptionary={}
+for line in file:
+    temp = remove_punct(line)
+    word = temp.split()
+    for x in word:
+        if(x in inceptionary.keys()):
+            pass
+        else:
+            inceptionary[x] = makePage(x)
+print(str(inceptionary))
